@@ -10,3 +10,19 @@ mongoose.Promise = global.Promise
 
 const app = express();
 
+function runServer(port = PORT) {
+    const server = app
+    .listen(port, () => {
+        console.info(`App listening on port ${server.address().port}`)
+    })
+    .on('error', err => {
+        console.error("Express failed to start")
+        console.error(err)
+    })
+}
+
+if (require.main === module) {
+    runServer();
+}
+
+module.exports = { app }
