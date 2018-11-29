@@ -10,6 +10,8 @@ mongoose.Promise = global.Promise
 
 const app = express();
 
+app.use(express.json())
+
 function runServer(port = PORT) {
     const server = app
     .listen(port, () => {
