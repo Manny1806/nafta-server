@@ -16,6 +16,17 @@ router.get('/', (req, res, next) => {
         })
 })
 
+router.get('/:id', (req, res, next) => {
+    const { id } = req.params
+    Pro.findById(id)
+        .then(results => {
+            res.json(results)
+        })
+        .catch(err => {
+            next(err)
+        })
+})
+
 router.post('/', (req, res, next) => {
     const {title, quote, quoteReference, quoteLink, type, description, imageUrl} = req.body
 
