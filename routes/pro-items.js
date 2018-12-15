@@ -1,11 +1,13 @@
 const express = require('express')
 const mongoose = require('mongoose')
 
+const Pro = require('../models/pro');
+
 const router = express.Router()
 
 router.get('/', (req, res, next) => {
     Pro.find()
-        .sort({createdAt: 'desc'})
+        .sort({title: 'asc'})
         .then(results => {
             res.json(results)
         })
@@ -15,7 +17,7 @@ router.get('/', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    const {title, quote, description, picUrl} = req.body
+    const {title, quote, quoteReference, quoteLink, type, description, imageUrl} = req.body
 
     if(!title) {
         const err = new Error('Missing `title` in request body')
@@ -29,7 +31,7 @@ router.post('/', (req, res, next) => {
         return next(err)
     }
 
-    const newPro = { title, quote, description, picUrl}
+    const newPro = { title, quote, quoteReference, quoteLink, type, description, imageUrl}
 
     Pro.create(newPro)
         .then(result => {
@@ -44,7 +46,7 @@ router.post('/', (req, res, next) => {
 
 router.put('/:id', (req, res, next) => {
     const { id } = req.params
-    const { title, quote, description, picUrl} = req.body
+    const { title, quote, quoteReference, quoteLink, type, description, imageUrl} = req.body
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         const err = new Error('The `id` is not valid')
@@ -52,7 +54,7 @@ router.put('/:id', (req, res, next) => {
         return next(err)
     }
 
-    const updatePro = { title, quote, description, picUrl }
+    const updatePro = { title, quote, quoteReference, quoteLink, type, description, imageUrl }
 
     Pro.findByIdAndUpdate(id, updatePro, {new: true})
         .then(result => {
