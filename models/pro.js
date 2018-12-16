@@ -7,7 +7,7 @@ const proSchema = new mongoose.Schema({
     quoteReference: String,
     quoteLink: String,
     description: String,
-    imageUrl: String
+    imgUrl: String
 })
 
 proSchema.set('timestamps', true)

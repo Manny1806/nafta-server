@@ -3,6 +3,7 @@ const cors = require('cors')
 const morgan = require('morgan')
 const passport = require('passport')
 const mongoose = require('mongoose')
+const cloudinary = require('cloudinary');
 
 const { dbConnect } = require('./db-mongoose');
 
@@ -11,6 +12,12 @@ const {PORT, CLIENT_ORIGIN} = require('./config')
 const proRouter = require('./routes/pro-items');
 
 mongoose.Promise = global.Promise
+
+cloudinary.config({
+    cloud_name: 'siouxcitymusic',
+    api_key: '872932728226311',
+    api_secret: '9HKSukbONUoBzBsIULQi9MZB-zA',
+  });
 
 const app = express();
 

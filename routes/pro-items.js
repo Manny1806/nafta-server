@@ -1,5 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose')
+const cloudinary = require('cloudinary');
+var multer  = require('multer')
+var upload = multer()
 
 const Pro = require('../models/pro');
 
@@ -28,7 +31,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', (req, res, next) => {
-    const {title, quote, quoteReference, quoteLink, type, description, imageUrl} = req.body
+    const {title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
 
     if(!title) {
         const err = new Error('Missing `title` in request body')
@@ -42,7 +45,7 @@ router.post('/', (req, res, next) => {
         return next(err)
     }
 
-    const newPro = { title, quote, quoteReference, quoteLink, type, description, imageUrl}
+    const newPro = { title, quote, quoteReference, quoteLink, type, description, imgUrl}
 
     Pro.create(newPro)
         .then(result => {
@@ -55,9 +58,22 @@ router.post('/', (req, res, next) => {
         })
 })
 
+router.post('/img', upload.single('file'),(req, res, next) => {
+    
+    cloudinary.v2.uploader.upload_stream({resource_type: 'raw'}, 
+    function(error, result){
+        console.log(result)
+        res.json(result)
+    })
+    .end(req.file.buffer);
+
+    
+
+})
+
 router.put('/:id', (req, res, next) => {
     const { id } = req.params
-    const { title, quote, quoteReference, quoteLink, type, description, imageUrl} = req.body
+    const { title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         const err = new Error('The `id` is not valid')
@@ -65,7 +81,7 @@ router.put('/:id', (req, res, next) => {
         return next(err)
     }
 
-    const updatePro = { title, quote, quoteReference, quoteLink, type, description, imageUrl }
+    const updatePro = { title, quote, quoteReference, quoteLink, type, description, imgUrl }
 
     Pro.findByIdAndUpdate(id, updatePro, {new: true})
         .then(result => {
