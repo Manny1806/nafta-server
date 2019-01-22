@@ -59,7 +59,7 @@ router.post('/', (req, res, next) => {
 })
 
 router.post('/img', upload.single('file'),(req, res, next) => {
-    
+    // console.log(req)
     cloudinary.v2.uploader.upload_stream({resource_type: 'raw'}, 
     function(error, result){
         console.log(result)
