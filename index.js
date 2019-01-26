@@ -15,6 +15,8 @@ const { localStrategy } = require('./auth/strategies');
 
 const authRouter = require('./routes/auth')
 const proRouter = require('./routes/pro-items');
+const conRouter = require('./routes/con-items');
+const congressRouter = require('./routes/congress-items')
 
 mongoose.Promise = global.Promise
 
@@ -28,21 +30,21 @@ const app = express();
 
 app.use(express.json())
 
-// app.use(function (req, res, next) {
-//     res.header('Access-Control-Allow-Origin', '*');
-//     res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
-//     res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
-//     if (req.method === 'OPTIONS') {
-//       return res.sendStatus(204);
-//     }
-//     next();
-// });
+app.use(function (req, res, next) {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type,Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE');
+    if (req.method === 'OPTIONS') {
+      return res.sendStatus(204);
+    }
+    next();
+});
 
-app.use(
-    cors({
-      origin: CLIENT_ORIGIN
-    })
-)
+// app.use(
+//     cors({
+//       origin: CLIENT_ORIGIN
+//     })
+// )
 
 passport.use( localStrategy)
 passport.use( jwtStrategy);
@@ -50,6 +52,8 @@ passport.use( jwtStrategy);
 app.use('/api/users', usersRouter);
 app.use('/api/auth', authRouter.router)
 app.use('/api/pro', proRouter);
+app.use('/api/con', conRouter);
+app.use('/api/congress', congressRouter);
 
 function runServer(port = PORT) {
     const server = app
