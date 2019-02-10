@@ -19,6 +19,21 @@ router.get('/', (req, res, next) => {
         })
 })
 
+router.get('/search/:term', (req, res, next) => {
+  
+    const { term } = req.params;
+  
+    Con.find({ "title": { "$regex": `${term}`, "$options": "i" }})
+      .sort({ createdAt: 'desc' })
+      .then(results => {
+          // console.log(results)
+        res.json(results);
+      })
+      .catch(err => {
+        next(err);
+      });
+  });
+
 router.get('/:id', (req, res, next) => {
     const { id } = req.params
     Con.findById(id)

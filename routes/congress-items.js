@@ -30,6 +30,21 @@ router.get('/:id', (req, res, next) => {
         })
 })
 
+router.get('/search/:term', (req, res, next) => {
+  
+    const { term } = req.params;
+  
+    Congress.find({ "title": { "$regex": `${term}`, "$options": "i" }})
+      .sort({ createdAt: 'desc' })
+      .then(results => {
+          // console.log(results)
+        res.json(results);
+      })
+      .catch(err => {
+        next(err);
+      });
+  });
+
 router.post('/', (req, res, next) => {
     const {title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
 
