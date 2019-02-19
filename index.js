@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express')
 const cors = require('cors')
 const morgan = require('morgan')
@@ -17,6 +18,7 @@ const authRouter = require('./routes/auth')
 const proRouter = require('./routes/pro-items');
 const conRouter = require('./routes/con-items');
 const congressRouter = require('./routes/congress-items')
+const feedbackRouter = require('./routes/feedback')
 
 mongoose.Promise = global.Promise
 
@@ -50,10 +52,11 @@ passport.use( localStrategy)
 passport.use( jwtStrategy);
 
 app.use('/api/users', usersRouter);
-app.use('/api/auth', authRouter.router)
+app.use('/api/auth', authRouter.router);
 app.use('/api/pro', proRouter);
 app.use('/api/con', conRouter);
 app.use('/api/congress', congressRouter);
+app.use('/api/feedback', feedbackRouter);
 
 function runServer(port = PORT) {
     const server = app
