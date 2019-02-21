@@ -6,15 +6,9 @@ const router = express.Router()
 
 router.post('/', (req, res, next) => {
   const {subject, comment, firstName, lastName, email, phone, zip, state} = req.body
-  // create reusable transporter object using the default SMTP transport
-
-  console.log(config.GMAIL_USER)
 
   let transporter = nodemailer.createTransport({
     service: "gmail",
-    // host: "smtp.gmail.com",
-    // port: 465,
-    // secure: true, // true for 465, false for other ports
     auth: {
       user: config.GMAIL_USER,
       pass: config.GMAIL_PASSWORD
@@ -28,7 +22,7 @@ router.post('/', (req, res, next) => {
 
   let mailOptions = {
     from: '"NAFTA Reactor" <naftareactor@gmail.com>', // sender address
-    to: "alex.dean.widner@gmail.com, manny1806@gmail.com", // list of receivers
+    to: "alex.dean.widner@gmail.com, russell@citizenstrade.org", // list of receivers
     subject: subject, // Subject line
     text: text, // plain text body
     html: `<b>${htmlText}</b>` // html body
@@ -43,14 +37,7 @@ router.post('/', (req, res, next) => {
       console.log(info);
       res.json("Your feedback has been sent!")
     }
-      
  });
-
-//   let info = await transporter.sendMail(mailOptions)
-
-//   res.json(`Message sent: ${info.messageId}`)
-  
-
 })
 
 module.exports = router
