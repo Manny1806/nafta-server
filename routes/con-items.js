@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const cloudinary = require('cloudinary');
 var multer  = require('multer')
 var upload = multer()
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', {session: false, failWithError: true})
 
 const Con = require('../models/con');
 
@@ -45,7 +47,7 @@ router.get('/:id', (req, res, next) => {
         })
 })
 
-router.post('/', (req, res, next) => {
+router.post('/', jwtAuth, (req, res, next) => {
     const {title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
 
     if(!title) {
@@ -73,7 +75,7 @@ router.post('/', (req, res, next) => {
         })
 })
 
-router.post('/img', upload.single('file'),(req, res, next) => {
+router.post('/img', jwtAuth, upload.single('file'),(req, res, next) => {
     // console.log(req)
     cloudinary.v2.uploader.upload_stream({resource_type: 'raw'}, 
     function(error, result){
@@ -86,7 +88,7 @@ router.post('/img', upload.single('file'),(req, res, next) => {
 
 })
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', jwtAuth, (req, res, next) => {
     const { id } = req.params
     const { title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
 
@@ -112,7 +114,7 @@ router.put('/:id', (req, res, next) => {
         })
 })
 
-router.delete('/:id', (req, res, next) => {
+router.delete('/:id', jwtAuth, (req, res, next) => {
     const { id } = req.params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
