@@ -7,8 +7,11 @@ const router = express.Router();
 
 const jsonParser = bodyParser.json();
 
+const passport = require('passport');
+const jwtAuth = passport.authenticate('jwt', {session: false, failWithError: true})
+
 // Post to register a new user
-router.post('/', jsonParser, (req, res) => {
+router.post('/', jwtAuth, jsonParser, (req, res) => {
   const requiredFields = ['username', 'password'];
   const missingField = requiredFields.find(field => !(field in req.body));
 
