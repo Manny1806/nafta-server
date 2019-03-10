@@ -48,7 +48,7 @@ router.get('/:id', (req, res, next) => {
 })
 
 router.post('/', jwtAuth, (req, res, next) => {
-    const {title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
+    const {title, type, quote, quoteReference, quoteLink, description, imgUrl} = req.body
 
     if(!title) {
         const err = new Error('Missing `title` in request body')
@@ -62,7 +62,13 @@ router.post('/', jwtAuth, (req, res, next) => {
         return next(err)
     }
 
-    const newPro = { title, quote, quoteReference, quoteLink, type, description, imgUrl}
+    if(!type) {
+        const err = new Error('Missing `type` in request body')
+        err.status = 400
+        return next(err)
+    }
+
+    const newPro = { title, type, quote, quoteReference, quoteLink, description, imgUrl}
 
     Pro.create(newPro)
         .then(result => {
@@ -90,7 +96,7 @@ router.post('/img', jwtAuth, upload.single('file'),(req, res, next) => {
 
 router.put('/:id', jwtAuth, (req, res, next) => {
     const { id } = req.params
-    const { title, quote, quoteReference, quoteLink, type, description, imgUrl} = req.body
+    const { title, type, quote, quoteReference, quoteLink, description, imgUrl} = req.body
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
         const err = new Error('The `id` is not valid')
@@ -98,7 +104,7 @@ router.put('/:id', jwtAuth, (req, res, next) => {
         return next(err)
     }
 
-    const updatePro = { title, quote, quoteReference, quoteLink, type, description, imgUrl }
+    const updatePro = { title, type, quote, quoteReference, quoteLink, description, imgUrl }
 
     Pro.findByIdAndUpdate(id, updatePro, {new: true})
         .then(result => {
