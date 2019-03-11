@@ -21,11 +21,12 @@ router.get('/', (req, res, next) => {
         })
 })
 
-router.get('/search/:term', (req, res, next) => {
+router.get('/search', (req, res, next) => {
   
-    const { term } = req.params;
+    const term = req.query.term ? req.query.term : "";
+    const filter = req.query.filter === 'all' ? "" : req.query.filter
   
-    Pro.find({ "title": { "$regex": `${term}`, "$options": "i" }})
+    Pro.find({ "title": { "$regex": `${term}`, "$options": "i" }, "type": { "$regex": `${filter}`, "$options": "i" }})
       .sort({ createdAt: 'desc' })
       .then(results => {
           // console.log(results)
