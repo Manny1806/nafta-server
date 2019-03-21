@@ -24,10 +24,10 @@ router.get('/', (req, res, next) => {
 router.get('/search', (req, res, next) => {
   
     const term = req.query.term ? req.query.term : "";
-    const filter = req.query.filter === 'all' ? "" : req.query.filter
+    const filter = req.query.filter === 'All' ? "" : req.query.filter.slice(0, -1)
   
     Pro.find({ "title": { "$regex": `${term}`, "$options": "i" }, "type": { "$regex": `${filter}`, "$options": "i" }})
-      .sort({ createdAt: 'desc' })
+      .sort({ title: 'asc' })
       .then(results => {
           // console.log(results)
         res.json(results);
