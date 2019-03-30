@@ -8,7 +8,7 @@ const cloudinary = require('cloudinary');
 
 const { dbConnect } = require('./db-mongoose');
 
-const {PORT, CLIENT_ORIGIN} = require('./config')
+const {PORT, CLOUD_NAME, API_KEY, API_SECRET, CLIENT_ORIGIN} = require('./config')
 
 const { router: usersRouter } = require('./routes/users');
 const { jwtStrategy } = require('./auth/strategies');
@@ -23,9 +23,9 @@ const feedbackRouter = require('./routes/feedback')
 mongoose.Promise = global.Promise
 
 cloudinary.config({
-    cloud_name: 'siouxcitymusic',
-    api_key: '872932728226311',
-    api_secret: '9HKSukbONUoBzBsIULQi9MZB-zA',
+    cloud_name: CLOUD_NAME,
+    api_key: API_KEY,
+    api_secret: API_SECRET,
   });
 
 const app = express();

@@ -5,5 +5,8 @@ module.exports = {
     JWT_SECRET: process.env.SECRET,
     JWT_EXPIRY: '7d',
     GMAIL_USER: process.env.GMAILUSER,
-    GMAIL_PASSWORD: process.env.GMAILPASSWORD
+    GMAIL_PASSWORD: process.env.GMAILPASSWORD,
+    CLOUD_NAME: process.env.CLOUDNAME,
+    API_KEY: process.env.APIKEY,
+    API_SECRET: process.env.APISECRET
 }
